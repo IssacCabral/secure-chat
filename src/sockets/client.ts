@@ -60,8 +60,6 @@ client.on("data", (data) => {
   }
 
   clientMessageHandler[message.type](message, client);
-
-  client.destroy();
 });
 
 client.on("close", () => {
