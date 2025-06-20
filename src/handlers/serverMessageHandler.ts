@@ -1,10 +1,10 @@
 import { MessageType } from "../utils/message";
-import { handleFoo } from "./server/handleFoo";
-import { handleHandshake2 } from "./server/handleHandshake2";
-import { handleInitServerConnection } from "./server/handleInitServerConnection";
+import { handleClientConfirmSharedSecret } from "./server/handleClientConfirmSharedSecret";
+import { handleClientConnectionRequest } from "./server/handleClientConnectionRequest";
+import { handleClientDhKeyAndSig } from "./server/handleClientDhKeyAndSig";
 
 export const serverMessageHandler: Partial<Record<MessageType, any>> = {
-  [MessageType.INIT_SERVER_CONNECTION]: handleInitServerConnection,
-  [MessageType.HANDSHAKE_1]: handleHandshake2,
-  [MessageType.HANDSHAKE_3]: handleFoo,
+  [MessageType.CLIENT_REQUESTS_CONNECTION]: handleClientConnectionRequest,
+  [MessageType.CLIENT_SENDS_DH_KEY_AND_SIGNATURE]: handleClientDhKeyAndSig,
+  [MessageType.CLIENT_CONFIRMS_SHARED_SECRET]: handleClientConfirmSharedSecret,
 };

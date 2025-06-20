@@ -1,7 +1,10 @@
 import * as net from "net";
 import { Message, MessageType } from "../../utils/message";
 
-export function handleFoo(clientMessage: Message, socket: net.Socket) {
+export function handleClientConfirmSharedSecret(
+  clientMessage: Message,
+  socket: net.Socket
+) {
   console.log("Handshake estabelecido com sucesso!");
   console.log("Mensagem recebida no servidor:", clientMessage);
   // const message: Message = {

@@ -1,8 +1,8 @@
 import { MessageType } from "../utils/message";
-import { handleHandshake1 } from "./client/handleHandshake1";
-import { handleHandshake3 } from "./client/handleHandshake3";
+import { handleServerAckConnection } from "./client/handleServerAckConnection";
+import { handleServerDhKeyAndSig } from "./client/handleServerDhKeyAndSig";
 
 export const clientMessageHandler: Partial<Record<MessageType, any>> = {
-  [MessageType.CLIENT__CONNECTED]: handleHandshake1,
-  [MessageType.HANDSHAKE_2]: handleHandshake3,
+  [MessageType.SERVER_ACK_CONNECTION]: handleServerAckConnection,
+  [MessageType.SERVER_SENDS_DH_KEY_AND_SIGNATURE]: handleServerDhKeyAndSig,
 };

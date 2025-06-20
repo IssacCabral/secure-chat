@@ -38,7 +38,7 @@ const client = new net.Socket();
 
 client.connect(serverPort, "localhost", () => {
   const message: Message = {
-    type: MessageType.INIT_SERVER_CONNECTION,
+    type: MessageType.CLIENT_REQUESTS_CONNECTION,
   };
   client.write(JSON.stringify(message));
 });
