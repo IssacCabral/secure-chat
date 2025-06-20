@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@crypto/*": ["src/crypto/*"],
+      "@handlers/*": ["src/handlers/*"],
+      "@keys/*": ["src/keys/*"],
+      "@sockets/*": ["src/sockets/*"],
+      "@utils/*": ["src/utils/*"],
+    }
+  }
+}

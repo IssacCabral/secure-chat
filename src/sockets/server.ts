@@ -1,6 +1,6 @@
+import { serverMessageHandler } from "@handlers/serverMessageHandler";
+import { Message } from "@utils/message";
 import * as net from "net";
-import { Message } from "../utils/message";
-import { serverMessageHandler } from "../handlers/serverMessageHandler";
 
 const serverPort = 7896;
 

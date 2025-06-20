@@ -1,7 +1,7 @@
-import { MessageType } from "../utils/message";
-import { handleClientConfirmSharedSecret } from "./server/handleClientConfirmSharedSecret";
+import { MessageType } from "@utils/message";
 import { handleClientConnectionRequest } from "./server/handleClientConnectionRequest";
 import { handleClientDhKeyAndSig } from "./server/handleClientDhKeyAndSig";
+import { handleClientConfirmSharedSecret } from "./server/handleClientConfirmSharedSecret";
 
 export const serverMessageHandler: Partial<Record<MessageType, any>> = {
   [MessageType.CLIENT_REQUESTS_CONNECTION]: handleClientConnectionRequest,

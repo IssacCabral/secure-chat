@@ -1,4 +1,4 @@
-import { MessageType } from "../utils/message";
+import { MessageType } from "@utils/message";
 import { handleServerAckConnection } from "./client/handleServerAckConnection";
 import { handleServerDhKeyAndSig } from "./client/handleServerDhKeyAndSig";
 

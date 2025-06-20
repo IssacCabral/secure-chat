@@ -1,5 +1,5 @@
 import * as net from "net";
-import { Message, MessageType } from "../../utils/message";
+import { Message, MessageType } from "@utils/message";
 
 export function handleClientDhKeyAndSig(
   clientMessage: Message,
