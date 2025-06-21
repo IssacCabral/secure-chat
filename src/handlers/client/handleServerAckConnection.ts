@@ -5,6 +5,7 @@ import { DhParams, UserName } from "@utils/publicParams";
 import { createDiffieHellman } from "@crypto/dh";
 import { ECDSA_sign } from "@crypto/ecdsa";
 import { Message, MessageType } from "@utils/message";
+import { setDhClientSession } from "src/session/clientSession";
 
 export function handleServerAckConnection(
   _serverMessage: Message,
@@ -15,6 +16,7 @@ export function handleServerAckConnection(
     DhParams.GENERATOR
   );
   const publicKeyDH = dhClient.getPublicKey().toString("base64");
+  setDhClientSession(dhClient);
 
   const privateKeyEcdsa = fs.readFileSync(
     `${__dirname}/../../keys/client-private.pem`,

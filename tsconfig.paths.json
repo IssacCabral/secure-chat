@@ -7,6 +7,7 @@
       "@keys/*": ["src/keys/*"],
       "@sockets/*": ["src/sockets/*"],
       "@utils/*": ["src/utils/*"],
+      "@session/*": ["src/session/*"]
     }
   }
 }

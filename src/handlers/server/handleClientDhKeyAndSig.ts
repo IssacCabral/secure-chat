@@ -5,6 +5,7 @@ import { Message, MessageType } from "@utils/message";
 import { ECDSA_sign, ECDSA_verify } from "@crypto/ecdsa";
 import { createDiffieHellman } from "@crypto/dh";
 import { DhParams, UserName } from "@utils/publicParams";
+import { setSharedSecretServerSession } from "@session/serverSession";
 
 export function handleClientDhKeyAndSig(
   clientMessage: Message,
@@ -16,10 +17,14 @@ export function handleClientDhKeyAndSig(
     "utf-8"
   );
 
-  const { publicKeyDH, sign, user } = clientMessage.content;
+  const {
+    publicKeyDH: publicKeyClientDH,
+    sign: sign_A,
+    user: username_client,
+  } = clientMessage.content;
   const isValidSign = ECDSA_verify(
-    publicKeyDH + user,
-    sign,
+    publicKeyClientDH + username_client,
+    sign_A,
     ecdsaClientPublicKey
   );
   if (!isValidSign) {
@@ -46,16 +51,13 @@ export function handleClientDhKeyAndSig(
     user: UserName.SERVER, // username_server
   };
 
-  const sharedSecretServer = dhServer.computeSecret(
-    Buffer.from(publicKeyDH, "base64")
+  setSharedSecretServerSession(
+    dhServer.computeSecret(Buffer.from(publicKeyClientDH, "base64"))
   );
 
   const message: Message = {
     type: MessageType.SERVER_SENDS_DH_KEY_AND_SIGNATURE,
     content,
-    session: {
-      sharedSecretServer,
-    },
   };
   socket.write(JSON.stringify(message));
 }

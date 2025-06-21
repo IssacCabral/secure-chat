@@ -11,8 +11,4 @@ export enum MessageType {
 export interface Message {
   type: MessageType;
   content?: any;
-  session?: {
-    sharedSecretServer?: Buffer;
-    sharedSecretClient?: string;
-  };
 }
