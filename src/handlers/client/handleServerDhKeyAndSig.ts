@@ -6,9 +6,7 @@ import { ECDSA_verify } from "@crypto/ecdsa";
 import {
   dhClientSession,
   setSharedSecretClientSession,
-  sharedSecretClientSession,
 } from "@session/clientSession";
-import { sharedSecretServerSession } from "@session/serverSession";
 
 export function handleServerDhKeyAndSig(
   serverMessage: Message,
