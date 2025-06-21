@@ -26,7 +26,7 @@ export function handleServerAckConnection(
 
   const content = {
     publicKeyDH: publicKeyDH, // A
-    sign: sig_A, // sig_A
+    sign: sig_A,
     user: UserName.CLIENT, // username_cliente
   };
 
