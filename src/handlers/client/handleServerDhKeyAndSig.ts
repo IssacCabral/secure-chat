@@ -88,9 +88,9 @@ function sendSecureMessage(socket: net.Socket) {
   const message: Message = {
     type: MessageType.CLIENT_CONFIRMS_SHARED_SECRET,
     content: {
-      HMAC_TAG,
-      IV_AES,
-      ENCRYPTED_MESSAGE,
+      HMAC_TAG: HMAC_TAG.toString("base64"),
+      IV_AES: IV_AES.toString("base64"),
+      ENCRYPTED_MESSAGE: ENCRYPTED_MESSAGE.toString("base64"),
     },
   };
   socket.write(JSON.stringify(message));

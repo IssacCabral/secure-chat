@@ -13,10 +13,16 @@ export const DhParams: Readonly<IDhParams> = {
   GENERATOR: 5,
 };
 
-export enum KdfParams {
-  SALT = 16,
-  ITERATIONS = 100000,
+interface IKdfParams {
+  SALT: Buffer;
+  ITERATIONS: number;
 }
+
+const KDF_SALT_BASE64 = `EA==`.replace(/\s+/g, "");
+export const KdfParams: Readonly<IKdfParams> = {
+  SALT: Buffer.from(KDF_SALT_BASE64, "base64"),
+  ITERATIONS: 100000,
+};
 
 export const length_AES_key = 32;
 export const length_HMAC_key = 32;
