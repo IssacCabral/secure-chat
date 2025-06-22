@@ -44,36 +44,7 @@ export function handleServerDhKeyAndSig(
   setSharedSecretClientSession(
     dhClientSession.computeSecret(Buffer.from(publicKeyServerDH, "base64"))
   );
-
-  const { KEY_AES, KEY_HMAC, IV_AES } = derivateKeys();
-
-  const ENCRYPTED_MESSAGE = encryptAES(
-    "Os inimigos estão avançando",
-    KEY_AES,
-    IV_AES
-  );
-  const HMAC_TAG = calculateHMAC(
-    Buffer.from(
-      IV_AES.toString("base64") + ENCRYPTED_MESSAGE.toString("base64")
-    ),
-    KEY_HMAC
-  );
-
-  console.log({
-    HMAC_TAG,
-    IV_AES,
-    ENCRYPTED_MESSAGE,
-  });
-
-  const message: Message = {
-    type: MessageType.CLIENT_CONFIRMS_SHARED_SECRET,
-    content: {
-      HMAC_TAG,
-      IV_AES,
-      ENCRYPTED_MESSAGE,
-    },
-  };
-  socket.write(JSON.stringify(message));
+  sendSecureMessage(socket);
 }
 
 function derivateKeys() {
@@ -97,4 +68,30 @@ function derivateKeys() {
     IV_AES,
     KEY_HMAC,
   };
+}
+
+function sendSecureMessage(socket: net.Socket) {
+  const { KEY_AES, KEY_HMAC, IV_AES } = derivateKeys();
+
+  const ENCRYPTED_MESSAGE = encryptAES(
+    "Os inimigos estão avançando",
+    KEY_AES,
+    IV_AES
+  );
+  const HMAC_TAG = calculateHMAC(
+    Buffer.from(
+      IV_AES.toString("base64") + ENCRYPTED_MESSAGE.toString("base64")
+    ),
+    KEY_HMAC
+  );
+
+  const message: Message = {
+    type: MessageType.CLIENT_CONFIRMS_SHARED_SECRET,
+    content: {
+      HMAC_TAG,
+      IV_AES,
+      ENCRYPTED_MESSAGE,
+    },
+  };
+  socket.write(JSON.stringify(message));
 }
