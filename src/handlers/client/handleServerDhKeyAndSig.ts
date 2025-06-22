@@ -6,7 +6,16 @@ import { ECDSA_verify } from "@crypto/ecdsa";
 import {
   dhClientSession,
   setSharedSecretClientSession,
+  sharedSecretClientSession,
 } from "@session/clientSession";
+import { PBKDF2 } from "@crypto/kdf";
+import {
+  KdfParams,
+  length_AES_key,
+  length_HMAC_key,
+} from "@utils/publicParams";
+import { encryptAES, generateRandomIV } from "@crypto/aes";
+import { calculateHMAC } from "@crypto/hmac";
 
 export function handleServerDhKeyAndSig(
   serverMessage: Message,
@@ -36,9 +45,56 @@ export function handleServerDhKeyAndSig(
     dhClientSession.computeSecret(Buffer.from(publicKeyServerDH, "base64"))
   );
 
+  const { KEY_AES, KEY_HMAC, IV_AES } = derivateKeys();
+
+  const ENCRYPTED_MESSAGE = encryptAES(
+    "Os inimigos estão avançando",
+    KEY_AES,
+    IV_AES
+  );
+  const HMAC_TAG = calculateHMAC(
+    Buffer.from(
+      IV_AES.toString("base64") + ENCRYPTED_MESSAGE.toString("base64")
+    ),
+    KEY_HMAC
+  );
+
+  console.log({
+    HMAC_TAG,
+    IV_AES,
+    ENCRYPTED_MESSAGE,
+  });
+
   const message: Message = {
     type: MessageType.CLIENT_CONFIRMS_SHARED_SECRET,
-    content: "Último passo do handshake foi executado",
+    content: {
+      HMAC_TAG,
+      IV_AES,
+      ENCRYPTED_MESSAGE,
+    },
   };
   socket.write(JSON.stringify(message));
+}
+
+function derivateKeys() {
+  const S = sharedSecretClientSession.toString("base64");
+  const KEY_AES = PBKDF2(
+    S,
+    KdfParams.SALT,
+    KdfParams.ITERATIONS,
+    length_AES_key
+  );
+  const KEY_HMAC = PBKDF2(
+    S,
+    KdfParams.SALT,
+    KdfParams.ITERATIONS,
+    length_HMAC_key
+  );
+  const IV_AES = generateRandomIV();
+
+  return {
+    KEY_AES,
+    IV_AES,
+    KEY_HMAC,
+  };
 }

@@ -3,7 +3,15 @@ export enum DhParams {
   GENERATOR = 5,
 }
 
+export enum KdfParams {
+  SALT = 16,
+  ITERATIONS = 100000,
+}
+
+export const length_AES_key = 32;
+export const length_HMAC_key = 32;
+
 export enum UserName {
-  CLIENT = "IssacCabral",
-  SERVER = "IssacCabral",
+  CLIENT = "IssacCabral-client",
+  SERVER = "IssacCabral-server",
 }
