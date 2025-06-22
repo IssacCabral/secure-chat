@@ -11,10 +11,7 @@ export function handleServerAckConnection(
   _serverMessage: Message,
   socket: net.Socket
 ) {
-  const dhClient = createDiffieHellman(
-    DhParams.PRIME_LENGTH_IN_BITS,
-    DhParams.GENERATOR
-  );
+  const dhClient = createDiffieHellman(DhParams.PRIME, DhParams.GENERATOR);
   const publicKeyDH = dhClient.getPublicKey().toString("base64");
   setDhClientSession(dhClient);
 

@@ -1,7 +1,7 @@
 import { createDiffieHellman as createDh, DiffieHellman } from "node:crypto";
 
 export function createDiffieHellman(
-  prime: number,
+  prime: Buffer,
   generator: number
 ): DiffieHellman {
   const dh = createDh(prime, generator);

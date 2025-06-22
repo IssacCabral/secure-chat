@@ -31,10 +31,7 @@ export function handleClientDhKeyAndSig(
     throw new Error("Assinatura inválida! Ataque detectado.");
   }
 
-  const dhServer = createDiffieHellman(
-    DhParams.PRIME_LENGTH_IN_BITS,
-    DhParams.GENERATOR
-  );
+  const dhServer = createDiffieHellman(DhParams.PRIME, DhParams.GENERATOR);
   const publicKeyServerDH = dhServer.getPublicKey().toString("base64");
 
   const privateKeyServerEcdsa = fs.readFileSync(
