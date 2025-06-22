@@ -1,10 +1,10 @@
 import crypto from "crypto";
 
 const AES_ALGORITHM = "aes-256-cbc";
-const IV_LENGTH = 16;
+const IV_LENGTH_IN_BYTES = 16;
 
 export function generateRandomIV(): Buffer {
-  return crypto.randomBytes(IV_LENGTH);
+  return crypto.randomBytes(IV_LENGTH_IN_BYTES);
 }
 
 export function encryptAES(plaintext: string, key: Buffer, iv: Buffer): Buffer {
