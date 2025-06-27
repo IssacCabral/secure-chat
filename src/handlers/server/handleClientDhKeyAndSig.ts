@@ -6,6 +6,7 @@ import { ECDSA_sign, ECDSA_verify } from "@crypto/ecdsa";
 import { createDiffieHellman } from "@crypto/dh";
 import { DhParams, UserName } from "@utils/publicParams";
 import { setSharedSecretServerSession } from "@session/serverSession";
+import { convertOpenSSHToPEM } from "@utils/convertOpenSSHToPem";
 
 export async function handleClientDhKeyAndSig(
   clientMessage: Message,
@@ -19,13 +20,8 @@ export async function handleClientDhKeyAndSig(
 
   const keysText = await response.text();
   const keys = keysText.split("\n");
-
-  console.log({ key: keys[3] });
-
-  const ecdsaClientPublicKey = fs.readFileSync(
-    `${__dirname}/../../keys/old/client-public.pem`,
-    "utf-8"
-  );
+  const ecdsaClientPublicKey = keys[2] ?? "";
+  const ecdsaClientPublicKeyToPem = convertOpenSSHToPEM(ecdsaClientPublicKey);
 
   const {
     publicKeyDH: publicKeyClientDH,
@@ -35,7 +31,7 @@ export async function handleClientDhKeyAndSig(
   const isValidSign = ECDSA_verify(
     publicKeyClientDH + username_client,
     sign_A,
-    ecdsaClientPublicKey
+    ecdsaClientPublicKeyToPem
   );
   if (!isValidSign) {
     throw new Error("Assinatura inválida! Ataque detectado.");
@@ -45,7 +41,7 @@ export async function handleClientDhKeyAndSig(
   const publicKeyServerDH = dhServer.getPublicKey().toString("base64");
 
   const privateKeyServerEcdsa = fs.readFileSync(
-    `${__dirname}/../../keys/old/server-private.pem`,
+    `${__dirname}/../../keys/server-private.pem`,
     "utf-8"
   );
 

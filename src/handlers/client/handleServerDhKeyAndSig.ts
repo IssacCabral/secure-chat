@@ -1,5 +1,4 @@
 import * as net from "net";
-import fs from "node:fs";
 
 import { Message, MessageType } from "@utils/message";
 import { ECDSA_verify } from "@crypto/ecdsa";
@@ -16,12 +15,12 @@ import {
 } from "@utils/publicParams";
 import { encryptAES, generateRandomIV } from "@crypto/aes";
 import { calculateHMAC } from "@crypto/hmac";
+import { convertOpenSSHToPEM } from "@utils/convertOpenSSHToPem";
 
 export async function handleServerDhKeyAndSig(
   serverMessage: Message,
   socket: net.Socket
 ) {
-  // todo: buscar do github
   const response = await fetch(`https://github.com/issaccabral.keys`);
   if (!response.ok) {
     throw new Error(`Erro ao buscar chaves: ${response.status}`);
@@ -29,13 +28,8 @@ export async function handleServerDhKeyAndSig(
 
   const keysText = await response.text();
   const keys = keysText.split("\n");
-
-  console.log({ key: keys[2] });
-
-  const ecdsaServerPublicKey = fs.readFileSync(
-    `${__dirname}/../../keys/old/server-public.pem`,
-    "utf-8"
-  );
+  const ecdsaServerPublicKey = keys[3] ?? "";
+  const ecdsaServerPublicKeyToPem = convertOpenSSHToPEM(ecdsaServerPublicKey);
 
   const {
     publicKeyDH: publicKeyServerDH,
@@ -45,7 +39,7 @@ export async function handleServerDhKeyAndSig(
   const isValidSign = ECDSA_verify(
     publicKeyServerDH + username_server,
     sign_B,
-    ecdsaServerPublicKey
+    ecdsaServerPublicKeyToPem
   );
   if (!isValidSign) {
     throw new Error("Assinatura inválida! Ataque detectado.");
