@@ -7,13 +7,23 @@ import { createDiffieHellman } from "@crypto/dh";
 import { DhParams, UserName } from "@utils/publicParams";
 import { setSharedSecretServerSession } from "@session/serverSession";
 
-export function handleClientDhKeyAndSig(
+export async function handleClientDhKeyAndSig(
   clientMessage: Message,
   socket: net.Socket
 ) {
   // todo: buscar do github
+  const response = await fetch("https://github.com/issaccabral.keys");
+  if (!response.ok) {
+    throw new Error(`Erro ao buscar chaves: ${response.status}`);
+  }
+
+  const keysText = await response.text();
+  const keys = keysText.split("\n");
+
+  console.log({ key: keys[3] });
+
   const ecdsaClientPublicKey = fs.readFileSync(
-    `${__dirname}/../../keys/client-public.pem`,
+    `${__dirname}/../../keys/old/client-public.pem`,
     "utf-8"
   );
 
@@ -35,7 +45,7 @@ export function handleClientDhKeyAndSig(
   const publicKeyServerDH = dhServer.getPublicKey().toString("base64");
 
   const privateKeyServerEcdsa = fs.readFileSync(
-    `${__dirname}/../../keys/server-private.pem`,
+    `${__dirname}/../../keys/old/server-private.pem`,
     "utf-8"
   );
 

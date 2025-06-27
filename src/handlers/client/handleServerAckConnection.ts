@@ -16,7 +16,7 @@ export function handleServerAckConnection(
   setDhClientSession(dhClient);
 
   const privateKeyEcdsa = fs.readFileSync(
-    `${__dirname}/../../keys/client-private.pem`,
+    `${__dirname}/../../keys/old/client-private.pem`,
     "utf-8"
   );
 

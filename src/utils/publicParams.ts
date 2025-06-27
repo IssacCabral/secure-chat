@@ -28,6 +28,6 @@ export const length_AES_key = 32;
 export const length_HMAC_key = 32;
 
 export enum UserName {
-  CLIENT = "IssacCabral-client",
-  SERVER = "IssacCabral",
+  CLIENT = "issaccabral",
+  SERVER = "issaccabral",
 }

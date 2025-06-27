@@ -17,13 +17,23 @@ import {
 import { encryptAES, generateRandomIV } from "@crypto/aes";
 import { calculateHMAC } from "@crypto/hmac";
 
-export function handleServerDhKeyAndSig(
+export async function handleServerDhKeyAndSig(
   serverMessage: Message,
   socket: net.Socket
 ) {
   // todo: buscar do github
+  const response = await fetch(`https://github.com/issaccabral.keys`);
+  if (!response.ok) {
+    throw new Error(`Erro ao buscar chaves: ${response.status}`);
+  }
+
+  const keysText = await response.text();
+  const keys = keysText.split("\n");
+
+  console.log({ key: keys[2] });
+
   const ecdsaServerPublicKey = fs.readFileSync(
-    `${__dirname}/../../keys/server-public.pem`,
+    `${__dirname}/../../keys/old/server-public.pem`,
     "utf-8"
   );
 
