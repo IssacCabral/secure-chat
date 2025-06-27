@@ -21,21 +21,16 @@ export async function handleServerDhKeyAndSig(
   serverMessage: Message,
   socket: net.Socket
 ) {
-  const response = await fetch(`https://github.com/issaccabral.keys`);
-  if (!response.ok) {
-    throw new Error(`Erro ao buscar chaves: ${response.status}`);
-  }
-
-  const keysText = await response.text();
-  const keys = keysText.split("\n");
-  const ecdsaServerPublicKey = keys[3] ?? "";
-  const ecdsaServerPublicKeyToPem = convertOpenSSHToPEM(ecdsaServerPublicKey);
-
   const {
     publicKeyDH: publicKeyServerDH,
     sign: sign_B,
     user: username_server,
   } = serverMessage.content;
+
+  const ecdsaServerPublicKeyToPem = await getEcdsaServerPublicKey(
+    username_server
+  );
+
   const isValidSign = ECDSA_verify(
     publicKeyServerDH + username_server,
     sign_B,
@@ -49,6 +44,20 @@ export async function handleServerDhKeyAndSig(
     dhClientSession.computeSecret(Buffer.from(publicKeyServerDH, "base64"))
   );
   sendSecureMessage(socket);
+}
+
+async function getEcdsaServerPublicKey(username_server: string) {
+  const response = await fetch(`https://github.com/${username_server}.keys`);
+  if (!response.ok) {
+    throw new Error(`Erro ao buscar chaves: ${response.status}`);
+  }
+
+  const keysText = await response.text();
+  const keys = keysText.split("\n");
+  const ecdsaServerPublicKey = keys[3] ?? "";
+  const ecdsaServerPublicKeyToPem = convertOpenSSHToPEM(ecdsaServerPublicKey);
+
+  return ecdsaServerPublicKeyToPem;
 }
 
 function derivateKeys() {

@@ -12,22 +12,16 @@ export async function handleClientDhKeyAndSig(
   clientMessage: Message,
   socket: net.Socket
 ) {
-  // todo: buscar do github
-  const response = await fetch("https://github.com/issaccabral.keys");
-  if (!response.ok) {
-    throw new Error(`Erro ao buscar chaves: ${response.status}`);
-  }
-
-  const keysText = await response.text();
-  const keys = keysText.split("\n");
-  const ecdsaClientPublicKey = keys[2] ?? "";
-  const ecdsaClientPublicKeyToPem = convertOpenSSHToPEM(ecdsaClientPublicKey);
-
   const {
     publicKeyDH: publicKeyClientDH,
     sign: sign_A,
     user: username_client,
   } = clientMessage.content;
+
+  const ecdsaClientPublicKeyToPem = await getEcdsaClientPublicKey(
+    username_client
+  );
+
   const isValidSign = ECDSA_verify(
     publicKeyClientDH + username_client,
     sign_A,
@@ -63,4 +57,18 @@ export async function handleClientDhKeyAndSig(
     content,
   };
   socket.write(JSON.stringify(message));
+}
+
+async function getEcdsaClientPublicKey(username_client: string) {
+  const response = await fetch(`https://github.com/${username_client}.keys`);
+  if (!response.ok) {
+    throw new Error(`Erro ao buscar chaves: ${response.status}`);
+  }
+
+  const keysText = await response.text();
+  const keys = keysText.split("\n");
+  const ecdsaClientPublicKey = keys[2] ?? "";
+  const ecdsaClientPublicKeyToPem = convertOpenSSHToPEM(ecdsaClientPublicKey);
+
+  return ecdsaClientPublicKeyToPem;
 }
