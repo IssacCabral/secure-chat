@@ -18,7 +18,7 @@ interface IKdfParams {
   ITERATIONS: number;
 }
 
-const KDF_SALT_BASE64 = `EA==`.replace(/\s+/g, "");
+const KDF_SALT_BASE64 = `EA==`.replace(/\s+/g, ""); // 16 em decimal
 export const KdfParams: Readonly<IKdfParams> = {
   SALT: Buffer.from(KDF_SALT_BASE64, "base64"),
   ITERATIONS: 100000,

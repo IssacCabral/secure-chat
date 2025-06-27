@@ -1,8 +1,9 @@
+<!-- https://www.fumdum.com/convert/base64 -->
 # 🔐 Sistema de Mensagens Seguras em Node
 
 ## 🎯 Objetivo
 
-Esse repositório tem o objetivo de Desenvolver um sistema de comunicação segura cliente-servidor em **Node**, utilizando **sockets** e técnicas de **criptografia** para garantir:
+Esse repositório teve o objetivo de Desenvolver um sistema de comunicação segura cliente-servidor em **Node**, utilizando **sockets** e técnicas de **criptografia** para garantir:
 
 - **Confidencialidade**
 - **Integridade**
@@ -61,9 +62,7 @@ Cliente envia uma mensagem no seguinte formato:
 
 - Node
 - `socket`
-- `hashlib` / `hmac`
-- `cryptography` (ou libs semelhantes para AES/ECDSA)
-- `PBKDF2` (via `hashlib` ou biblioteca de terceiros)
+- `node:crypto`
 
 ---
 
