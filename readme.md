@@ -1,7 +1,7 @@
 <!-- https://www.fumdum.com/convert/base64 -->
-# 🔐 Sistema de Mensagens Seguras em Node
+# Sistema de Mensagens Seguras em Node
 
-## 🎯 Objetivo
+## Objetivo
 
 Esse repositório teve o objetivo de Desenvolver um sistema de comunicação segura cliente-servidor em **Node**, utilizando **sockets** e técnicas de **criptografia** para garantir:
 
@@ -11,7 +11,7 @@ Esse repositório teve o objetivo de Desenvolver um sistema de comunicação seg
 
 ---
 
-## 🛡️ Funcionalidades de Segurança
+## Funcionalidades de Segurança
 
 | Segurança       | Mecanismo Utilizado                                        |
 |----------------|-------------------------------------------------------------|
@@ -24,7 +24,7 @@ Esse repositório teve o objetivo de Desenvolver um sistema de comunicação seg
 
 ---
 
-## 🔄 Fluxo do Sistema
+## Fluxo do Sistema
 
 ### 1. Handshake Seguro
 
@@ -58,7 +58,7 @@ Cliente envia uma mensagem no seguinte formato:
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - Node
 - `socket`
@@ -66,7 +66,7 @@ Cliente envia uma mensagem no seguinte formato:
 
 ---
 
-## 📌 Observações
+## Observações
 
 - Parâmetros DH (primo `p` e gerador `g`) são fixos para simplificação.
 - Chaves públicas devem estar hospedadas no GitHub.

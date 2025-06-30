@@ -1,7 +1,7 @@
 // 1024 bits
 const DH_PRIME_BASE64 = `
 2km4Cj9z2jURLPBFqWlaC3fTOssj0RSzUxqSdvQfsguF+JkvrGciw6QbU13rROMiiIYWRBNU3SR4nAvA1fAxSmrgrthPBMeiZ95LbUoTZ6OtDvU8aE8qS2oCfmb5tchSnrydxj+UchAmQP9+b6UNGswYEMU2LV7sCFZpbl3liO0=
-`.replace(/\s+/g, "");
+`.replace(/\s+/g, ""); // remover espaços em branco
 
 interface IDhParams {
   PRIME: Buffer;
